@@ -7,9 +7,13 @@
 
 **One-sentence goal:** Teach **cliff then linear unlock**, and a **permissionless claim** that still credits the beneficiary.
 
-**Real code:** `npm test`. **Not** a live treasury, **not** token custody, **not** wasm.
+**Real code:** `npm test` (unit + **multi-claim composition**). **Not** a live treasury, **not** token custody, **not** wasm.
 
 Docs: [docs.wax.io](https://docs.wax.io/). Paying out still needs a token — [eosio.token reference](https://github.com/eosio/eosio.contracts).
+
+## Composition note
+
+`vest.composition.test.ts` walks a full grant: refuse before cliff, mid claim, same-timestamp refuse, final claim. Sum of payouts equals `total`. A helper caller still credits the beneficiary. Separate grants do not share `claimed`.
 
 ## What is true (executed)
 
@@ -19,6 +23,7 @@ Docs: [docs.wax.io](https://docs.wax.io/). Paying out still needs a token — [e
 | Mid schedule | `floor(total * elapsed / duration)` from `startTs` |
 | After end | full `total` |
 | Claim by helper account | pays **beneficiary**; second claim is delta only |
+| Sequential claims | sum of payouts === total |
 
 ## Related
 
