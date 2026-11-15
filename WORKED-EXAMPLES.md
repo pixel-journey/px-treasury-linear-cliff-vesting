@@ -1,43 +1,33 @@
-# Worked examples — cliff then linear unlock
+# Worked examples — linear cliff vesting
 
-Grant shape:
+Grant: beneficiary alice, total **1000**, start `1_000_000`, cliff **100** s, duration **1000** s.
 
-```text
-beneficiary: alice
-total: 1000n
-startTs: 1_000_000
-cliffSec: 100
-durationSec: 1000
-```
+## vestedAmount
 
-Cliff ends at `1_000_100`. Fully vested at `1_001_000`.
+| nowTs | vested |
+| --- | --- |
+| 1_000_050 (before cliff) | 0 |
+| 1_000_100 (cliff instant) | **100** = floor(1000 * 100 / 1000) |
+| 1_000_500 | 500 |
+| 2_000_000 or later | 1000 |
 
-## Example 1 — before cliff
+## claimVested
 
-`nowTs = 1_000_050` → `vestedAmount = 0` → claim throws `nothing to claim`.
+Permissionless: caller may be `bob` or `helperacct`; **payout always credits alice**.
 
-## Example 2 — mid schedule
+| Step | Result |
+| --- | --- |
+| claim at 1_000_050 | nothing |
+| claim at 1_000_500 | payout 500, claimed 500 |
+| second claim same ts | nothing |
+| claim at 1_001_000 or end | payout 500, claimed 1000 |
 
-`nowTs = 1_000_500` → elapsed 500 → `vested = floor(1000 * 500 / 1000) = 500`.
+`claimable` with prior claimed 200 at t=1_000_500 → 300. If claimed 600 while vested 500 → claimable 0.
 
-First claim pays `500`, `claimed` becomes `500`.
+## Composition
 
-## Example 3 — same timestamp second claim
+Full lifecycle payouts sum to **1000**. Three partial times `1_000_250`, `1_000_750`, `1_001_000` also sum to 1000. Independent bob grant (total 200, cliff 0, duration 200) does not share claimed state with alice.
 
-Claim again at `1_000_500` → claimable 0 → refused. Composition locks this.
+## assertGrant refusals
 
-## Example 4 — final claim
-
-`nowTs = 1_001_000` (or later) → vested `1000` → claim pays `500` (delta only). Sum of payouts `1000`.
-
-## Example 5 — helper caller
-
-`claimVested(grant, now, "bob")` still returns `beneficiary: "alice"`. Bob cannot redirect the credit.
-
-## Example 6 — independent grants
-
-Two grants for alice and carol do not share `claimed`. Composition covers separate schedules.
-
-## Example 7 — production mirror
-
-[pxvest](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) implements open/claim preview math with educational `now_ts`. It does **not** transfer tokens and is **not deployed**.
+cliff > duration; total 0; claimed > total; duration 0.
