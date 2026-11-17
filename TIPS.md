@@ -1,28 +1,37 @@
-# Tips — vesting schedules
+# Tips — cliff then linear vesting
 
 ## Math
 
-- Vested before cliff is **0**, not a pro-rata from `startTs` unless you intentionally design a no-cliff schedule (`cliffSec = 0`).
-- Use integer math: `(total * elapsed) / duration` with wide intermediates on chain.
-- Claim pays **delta** (`vested - claimed`), never the full vested amount again.
+- Before `start + cliff`, vested is **0**.
+- After the cliff, this lab reveals `floor(total * (now - start) / duration)` — the slope is measured from **start**, not restarted at the cliff.
+- At the cliff instant the amount can **jump** to `floor(total * cliff / duration)`. Say that in the product copy if the cliff is long.
+- Claim pays **delta** (`vested - claimed`) only.
+- `cliffSec > durationSec` is refused.
 
-## Auth product choices
+## Auth
 
 | Design | Behavior |
 | --- | --- |
-| Permissionless claim | Anyone may call; tokens always to beneficiary (this lab) |
+| Permissionless claim | Anyone may call; tokens go to **beneficiary** (this lab) |
 | Beneficiary-only | `require_auth(beneficiary)` |
-| Admin clawback | Separate action; document carefully |
-
-## Pairing with other treasury labs
-
-- Fund the grant from a [fee splitter](https://github.com/pixel-journey/px-treasury-incoming-fee-splitter) leg.
-- Pause new grants with [pausable guard](https://github.com/pixel-journey/px-token-pausable-emergency-guard) patterns.
-- Watch dust: tiny totals over long durations may claim 0 for many ticks ([dust visualizer](https://github.com/pixel-journey/px-token-dust-truncation-visualizer)).
+| Revoke / clawback | Separate action; do not strand `claimed` |
 
 ## Common mistakes
 
-1. Allowing `cliffSec > durationSec`.
-2. Crediting the **caller** instead of the **beneficiary**.
-3. Updating `claimed` before a successful token transfer without a recovery path.
-4. Using wall-clock in tests without an injectable `nowTs` (this lab injects it on purpose).
+1. Crediting the **caller** instead of the beneficiary.
+2. Letting the user pass `nowTs` on chain (this lab does, on purpose, in tests).
+3. Updating `claimed` before the token transfer succeeds, then retrying and paying twice — or the reverse and stranding a claim. Same action.
+4. Advertising "vesting starts after the cliff" while the formula is hide-then-reveal from `start`.
+5. Forgetting dust: a tiny total over a long duration can claim 0 for many ticks ([dust visualizer](https://github.com/pixel-journey/px-token-dust-truncation-visualizer)).
+
+## Nice-to-have extensions (not in this repo)
+
+| Idea | Note |
+| --- | --- |
+| Fresh line after cliff | Different formula; tests would change |
+| Revoke | Freeze further vesting; return unvested |
+| Multiple tranches | One row per cliff |
+| Fund from a splitter leg | [fee splitter](https://github.com/pixel-journey/px-treasury-incoming-fee-splitter) |
+| Pause new claims | [pausable](https://github.com/pixel-journey/px-token-pausable-emergency-guard) |
+
+Use wide integers for `total * elapsed` before dividing.
