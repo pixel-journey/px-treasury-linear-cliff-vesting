@@ -1,24 +1,34 @@
-# Security notes — vesting
+# Security — linear cliff vesting
 
-## Mitigated in the lab
+## Closed in tests
 
 | Issue | Behavior |
 | --- | --- |
 | Claim before cliff | payout 0 / refuse |
 | Double claim same timestamp | nothing to claim |
-| Helper redirects funds | beneficiary field fixed on grant |
-| Invalid schedule | cliff ≤ duration, positive total/duration |
+| Helper redirects funds | **beneficiary** field fixed on grant |
+| Invalid schedule | cliff ≤ duration; positive total/duration |
 | Over-claim | claimed never exceeds total via claimable math |
 
-## Production still needs
+## Not closed (production)
 
 | Concern | Guidance |
 | --- | --- |
 | Token movement | Actual `transfer` to beneficiary after claim math |
 | Grant funding | Escrow total at open; refuse underfunded claims |
-| Auth | Decide permissionless vs beneficiary-only |
+| Auth | Permissionless claim vs beneficiary-only |
 | Admin | setconfig / cancel / pause under msig-friendly paths |
 | Time | Prefer `current_time_point()`; lab `nowTs` is for tests only |
 | Overflow | 128-bit for `total * elapsed` |
 
-C++ mirror: [pxvest](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) — accounting only, not deployed.
+## Attack angles
+
+1. Crediting the **caller** instead of the beneficiary.
+2. Letting the user pass `nowTs` on chain.
+3. Updating `claimed` before the token transfer succeeds (or the reverse without recovery).
+4. Advertising “vesting starts after the cliff” while the formula is hide-then-reveal from `start`.
+5. Dust: tiny totals over long durations claim 0 for many ticks ([dust](https://github.com/pixel-journey/px-token-dust-truncation-visualizer)).
+
+## Honesty limits
+
+Accounting only. C++ mirror: [pxvest](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) — not deployed.
