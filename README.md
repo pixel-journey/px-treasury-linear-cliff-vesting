@@ -2,13 +2,13 @@
 
 > **Domain:** treasury vesting  
 > **Sources:** [SOURCES.md](SOURCES.md)  
-> **Catalog:** [px-contract-examples-vault](https://github.com/pixel-journey/px-contract-examples-vault)
+> **Catalog:** `px-contract-examples-vault` (private; not this public course)
 
 **Goal:** Teach **cliff then linear unlock**, and a **permissionless claim** that still credits the beneficiary (helper callers cannot redirect the payout).
 
 **Code under test:** `npm test` (unit + multi-claim composition).
 
-**Production mirror (C++ → wasm):** [wax-contract-compiler `pxvest`](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) — [run 28](https://github.com/pixel-journey/wax-contract-compiler/actions/runs/43213090195). WASM SHA256 `f9c9e1d7df5b7cc2dc68374a182ce9135a704a713c6cd5f30255881116f80c92`. Audit 0/0. Preview math only — does **not** transfer tokens; **not deployed**.
+**Build record, not this course:** a private compiler tree `pxvest` produced wasm SHA256 `f9c9e1d7df5b7cc2dc68374a182ce9135a704a713c6cd5f30255881116f80c92` (audit 0/0). That tree is not public and is **not deployed**. It does not transfer tokens. The course is the TypeScript under `npm test`.
 
 **Docs:** [docs.wax.io](https://docs.wax.io/). Token reference: [eosio.token](https://github.com/eosio/eosio.contracts).
 

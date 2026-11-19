@@ -13,7 +13,7 @@
 - Claim may be permissionless; the credit still goes to the **beneficiary**, not the caller.
 - Beneficiary is fixed at schedule creation.
 
-This lab takes `nowTs` as an argument. A contract must use chain time. C++ mirror: [pxvest](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) — accounting only, not deployed.
+This lab takes `nowTs` as an argument. A contract must use chain time. C++ mirror: `wax-contract-compiler` (private; not this public course) — accounting only, not deployed.
 
 ## Related labs
 
@@ -21,6 +21,6 @@ This lab takes `nowTs` as an argument. A contract must use chain time. C++ mirro
 | --- | --- |
 | [fee splitter](https://github.com/pixel-journey/px-treasury-incoming-fee-splitter) | Incoming fee legs |
 | [pausable](https://github.com/pixel-journey/px-token-pausable-emergency-guard) | Pause claims without a single-key deadlock |
-| [dust](https://github.com/pixel-journey/px-token-dust-truncation-visualizer) | Floor on a small claim |
+| `px-token-dust-truncation-visualizer` (private; not this public course) | Floor on a small claim |
 | [token ledger](https://github.com/pixel-journey/px-token-balance-ledger) | Where the payout is conserved |
-| [treasury path](https://github.com/pixel-journey/px-contract-examples-vault/blob/main/docs/TREASURY-TOKEN-LEARNING-PATH.md) | Step 8 |
+| `px-contract-examples-vault` (private; not this public course) | Step 8 |

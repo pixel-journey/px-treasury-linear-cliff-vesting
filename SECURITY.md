@@ -27,8 +27,8 @@
 2. Letting the user pass `nowTs` on chain.
 3. Updating `claimed` before the token transfer succeeds (or the reverse without recovery).
 4. Advertising “vesting starts after the cliff” while the formula is hide-then-reveal from `start`.
-5. Dust: tiny totals over long durations claim 0 for many ticks ([dust](https://github.com/pixel-journey/px-token-dust-truncation-visualizer)).
+5. Dust: tiny totals over long durations claim 0 for many ticks (`px-token-dust-truncation-visualizer` (private; not this public course)).
 
 ## Honesty limits
 
-Accounting only. C++ mirror: [pxvest](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxvest) — not deployed.
+Accounting only. C++ mirror: `wax-contract-compiler` (private; not this public course) — not deployed.
