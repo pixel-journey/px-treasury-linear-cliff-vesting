@@ -21,6 +21,6 @@ This lab takes `nowTs` as an argument. A contract must use chain time. C++ mirro
 | --- | --- |
 | [fee splitter](https://github.com/pixel-journey/px-treasury-incoming-fee-splitter) | Incoming fee legs |
 | [pausable](https://github.com/pixel-journey/px-token-pausable-emergency-guard) | Pause claims without a single-key deadlock |
-| `px-token-dust-truncation-visualizer` (private; not this public course) | Floor on a small claim |
+| [px-token-dust-truncation-visualizer](https://github.com/pixel-journey/px-token-dust-truncation-visualizer) | Floor on a small claim |
 | [token ledger](https://github.com/pixel-journey/px-token-balance-ledger) | Where the payout is conserved |
 | `px-contract-examples-vault` (private; not this public course) | Step 8 |

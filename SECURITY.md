@@ -27,7 +27,7 @@
 2. Letting the user pass `nowTs` on chain.
 3. Updating `claimed` before the token transfer succeeds (or the reverse without recovery).
 4. Advertising “vesting starts after the cliff” while the formula is hide-then-reveal from `start`.
-5. Dust: tiny totals over long durations claim 0 for many ticks (`px-token-dust-truncation-visualizer` (private; not this public course)).
+5. Dust: tiny totals over long durations claim 0 for many ticks ([px-token-dust-truncation-visualizer](https://github.com/pixel-journey/px-token-dust-truncation-visualizer)).
 
 ## Honesty limits
 
