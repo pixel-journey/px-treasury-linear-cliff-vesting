@@ -15,6 +15,10 @@
 
 This lab takes `nowTs` as an argument. A contract must use chain time. C++ mirror: `wax-contract-compiler` (private; not this public course) — accounting only, not deployed.
 
+## Portability
+
+Cliff-then-linear math ports after you change the token symbol and precision. **PXJ precision is always 8** in this org. On a live contract, `nowTs` must come from chain time (`current_time_point`), not a client clock. The beneficiary-vs-caller rule is Antelope-permission design, not a WAX opcode.
+
 ## Related labs
 
 | Lab | Topic |
